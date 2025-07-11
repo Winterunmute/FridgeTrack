@@ -87,76 +87,16 @@
 
   <script>
     const items = [
-      {
-        id: 'bread',
-        label: 'Bread',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Bread_icon.svg/1024px-Bread_icon.svg.png',
-        freshDays: 2,
-        cautionDays: 5
-      },
-      {
-        id: 'pork',
-        label: 'Pork',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Pork_icon.svg/1024px-Pork_icon.svg.png',
-        freshDays: 2,
-        cautionDays: 4
-      },
-      {
-        id: 'beef',
-        label: 'Beef',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Beef_icon.svg/1024px-Beef_icon.svg.png',
-        freshDays: 3,
-        cautionDays: 5
-      },
-      {
-        id: 'chicken',
-        label: 'Chicken',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Chicken_icon.svg/1024px-Chicken_icon.svg.png',
-        freshDays: 1,
-        cautionDays: 3
-      },
-      {
-        id: 'butter',
-        label: 'Butter',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Butter_icon.svg/1024px-Butter_icon.svg.png',
-        freshDays: 10,
-        cautionDays: 20
-      },
-      {
-        id: 'milk',
-        label: 'Milk',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Milk_bottle_icon.svg/1024px-Milk_bottle_icon.svg.png',
-        freshDays: 3,
-        cautionDays: 7
-      },
-      {
-        id: 'cereal',
-        label: 'Cereal',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Cereal_icon.svg/1024px-Cereal_icon.svg.png',
-        freshDays: 30,
-        cautionDays: 60
-      },
-      {
-        id: 'instant_noodles',
-        label: 'Instant Noodles',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Instant_noodles_icon.svg/1024px-Instant_noodles_icon.svg.png',
-        freshDays: 90,
-        cautionDays: 180
-      },
-      {
-        id: 'pasta',
-        label: 'Pasta',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Pasta_icon.svg/1024px-Pasta_icon.svg.png',
-        freshDays: 60,
-        cautionDays: 120
-      },
-      {
-        id: 'rice',
-        label: 'Rice',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Rice_icon.svg/1024px-Rice_icon.svg.png',
-        freshDays: 90,
-        cautionDays: 180
-      }
+      { id: 'bread', label: 'Bread', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Bread_icon.svg/1024px-Bread_icon.svg.png', freshDays: 2, cautionDays: 5 },
+      { id: 'pork', label: 'Pork', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Pork_icon.svg/1024px-Pork_icon.svg.png', freshDays: 2, cautionDays: 4 },
+      { id: 'beef', label: 'Beef', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Beef_icon.svg/1024px-Beef_icon.svg.png', freshDays: 3, cautionDays: 5 },
+      { id: 'chicken', label: 'Chicken', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Chicken_icon.svg/1024px-Chicken_icon.svg.png', freshDays: 1, cautionDays: 3 },
+      { id: 'butter', label: 'Butter', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Butter_icon.svg/1024px-Butter_icon.svg.png', freshDays: 10, cautionDays: 20 },
+      { id: 'milk', label: 'Milk', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Milk_bottle_icon.svg/1024px-Milk_bottle_icon.svg.png', freshDays: 3, cautionDays: 7 },
+      { id: 'cereal', label: 'Cereal', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Cereal_icon.svg/1024px-Cereal_icon.svg.png', freshDays: 30, cautionDays: 60 },
+      { id: 'instant_noodles', label: 'Instant Noodles', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Instant_noodles_icon.svg/1024px-Instant_noodles_icon.svg.png', freshDays: 90, cautionDays: 180 },
+      { id: 'pasta', label: 'Pasta', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Pasta_icon.svg/1024px-Pasta_icon.svg.png', freshDays: 60, cautionDays: 120 },
+      { id: 'rice', label: 'Rice', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Rice_icon.svg/1024px-Rice_icon.svg.png', freshDays: 90, cautionDays: 180 }
     ];
 
     let timeOffsetDays = 0;
@@ -221,11 +161,13 @@
     function logItem(itemId) {
       const now = new Date().toISOString();
       localStorage.setItem(itemId, now);
+      renderItems();
       updateItemColors();
     }
 
     function removeItem(itemId) {
       localStorage.removeItem(itemId);
+      renderItems();
       updateItemColors();
     }
 
@@ -237,6 +179,7 @@
       freezerList[itemId] = storedTime;
       localStorage.setItem('freezerItems', JSON.stringify(freezerList));
       localStorage.removeItem(itemId);
+      renderItems();
       updateItemColors();
       renderFreezer();
     }
@@ -245,7 +188,6 @@
       let freezerList = JSON.parse(localStorage.getItem('freezerItems') || '{}');
       delete freezerList[itemId];
       localStorage.setItem('freezerItems', JSON.stringify(freezerList));
-      updateItemColors();
       renderFreezer();
     }
 
@@ -282,17 +224,18 @@
 
     function advanceDays(days) {
       timeOffsetDays += days;
+      renderItems();
       updateItemColors();
       renderFreezer();
     }
 
     function resetTimeOffset() {
       timeOffsetDays = 0;
+      renderItems();
       updateItemColors();
       renderFreezer();
     }
 
-    // Freezer section rendering
     function renderFreezer() {
       let freezerContainer = document.getElementById('freezer-container');
       if (!freezerContainer) {
@@ -309,7 +252,6 @@
 
       const freezerList = JSON.parse(localStorage.getItem('freezerItems') || '{}');
 
-      // Clear previous list if any
       freezerContainer.querySelectorAll('.freezer-item').forEach(el => el.remove());
 
       if (Object.keys(freezerList).length === 0) {
